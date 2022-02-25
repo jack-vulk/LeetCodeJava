@@ -22,8 +22,6 @@ import vulk.leetcode.util.ICsvParser;
  */
 public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 
-	private static final int PARAM_FILE_PATH = 0;
-	
 	private static final int PARAM_LIST_NODE_FIRST_IDX = 0;
 	private static final int PARAM_LIST_NODE_LAST_IDX = 1;
 
@@ -181,7 +179,7 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 	@Override
 	protected boolean isValid(final String[] args) {
 
-		return ComUtil.isNotEmpty(args) && FileUtil.iValidFile(args[PARAM_FILE_PATH]);
+		return ComUtil.isNotEmpty(args) && FileUtil.isValidFile(args[PARAM_FILE_PATH]);
 	}
 
 	/**
