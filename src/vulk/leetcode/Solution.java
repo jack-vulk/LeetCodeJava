@@ -18,6 +18,11 @@ import vulk.leetcode.util.ComUtil;
 public abstract class Solution<I, O> {
 
 	/**
+	 * Index to retrieve the input file's path
+	 */
+	protected static final int PARAM_FILE_PATH = 0;
+
+	/**
 	 * LOG
 	 */
 	private static final Logger LOGGER = Logger.getLogger(Solution.class.getName());
@@ -32,7 +37,7 @@ public abstract class Solution<I, O> {
 	 * @throws ExecutionException        Thrown when there is something wrong during
 	 *                                   runtime
 	 */
-	public O excute(String args[]) throws InvalidParameterException, ExecutionException {
+	public O run(String args[]) throws InvalidParameterException, ExecutionException {
 
 		O result = this.execute(this.parse(args));
 		printResult(result);
@@ -56,6 +61,8 @@ public abstract class Solution<I, O> {
 			print(args);
 			throw new InvalidParameterException();
 		}
+
+		LOGGER.info("InputFile: " + args[PARAM_FILE_PATH]);
 
 		I params = this.parseParam(args);
 
