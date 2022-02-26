@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
 
 import vulk.leetcode.Solution;
 import vulk.leetcode.common.ListNode;
@@ -130,8 +131,12 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 	// The following code must not be posted on to LeetCode
 	// ===================================
 	@Override
-	protected ListNode proc(Param param) {
-		return mergeTwoLists(param.firstList, param.secondList);
+	protected ListNode proc(Param param) throws ExecutionException {
+		try {
+			return mergeTwoLists(param.firstList, param.secondList);
+		} catch (Exception e) {
+			throw new ExecutionException(e);
+		}
 	}
 
 	@Override
