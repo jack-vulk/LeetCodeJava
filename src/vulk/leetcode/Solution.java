@@ -40,7 +40,7 @@ public abstract class Solution<I, O> {
 	public O run(String args[]) throws InvalidParameterException, ExecutionException {
 
 		ParsedInfo params = this.parse(args);
-		O result = this.execute(params.params);
+		O result = this.proc(params.params);
 		printResult(result);
 
 		if (isMatch(result, params.expectedValue)) {
@@ -124,7 +124,7 @@ public abstract class Solution<I, O> {
 	 * @throws ExecutionException Thrown when there is something wrong during
 	 *                            runtime
 	 */
-	protected abstract O execute(I param) throws ExecutionException;
+	protected abstract O proc(I param) throws ExecutionException;
 
 	/**
 	 * Parse input's passed from main process to input and expected value

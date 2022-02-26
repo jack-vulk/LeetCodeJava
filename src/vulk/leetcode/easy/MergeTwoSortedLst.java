@@ -129,7 +129,7 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 	// The following code must not be posted on to LeetCode
 	// ===================================
 	@Override
-	protected ListNode execute(Param param) {
+	protected ListNode proc(Param param) {
 		return mergeTwoLists(param.firstList, param.secondList);
 	}
 
