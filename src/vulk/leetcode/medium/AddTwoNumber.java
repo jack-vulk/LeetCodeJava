@@ -3,6 +3,7 @@ package vulk.leetcode.medium;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import vulk.leetcode.Solution;
 import vulk.leetcode.common.ListNode;
@@ -82,8 +83,12 @@ public class AddTwoNumber extends Solution<Param, ListNode> {
 	// The following code must not be posted on to LeetCode
 	// ===================================
 	@Override
-	protected ListNode proc(Param param) {
-		return addTwoNumbers(param.firstList, param.secondList);
+	protected ListNode proc(Param param) throws ExecutionException {
+		try {
+			return addTwoNumbers(param.firstList, param.secondList);
+		} catch (Exception e) {
+			throw new ExecutionException(e);
+		}
 	}
 
 	@Override
