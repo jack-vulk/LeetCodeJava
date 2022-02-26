@@ -39,7 +39,7 @@ public abstract class Solution<I, O> {
 	 */
 	public O run(String args[]) throws InvalidParameterException, ExecutionException {
 
-		O result = this.execute(this.parse(args));
+		O result = this.proc(this.parse(args));
 		printResult(result);
 		return result;
 	}
@@ -97,7 +97,7 @@ public abstract class Solution<I, O> {
 		LOGGER.info("Output: " + result.toString());
 	}
 
-	protected abstract O execute(I param) throws ExecutionException;
+	protected abstract O proc(I param) throws ExecutionException;
 
 	protected abstract I parseParam(String args[]) throws InvalidParameterException;
 
