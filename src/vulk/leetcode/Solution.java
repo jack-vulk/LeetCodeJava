@@ -1,6 +1,8 @@
 package vulk.leetcode;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -166,6 +168,17 @@ public abstract class Solution<I, O> {
 		 */
 		public O expectedValue;
 		
+		@Override
+		public String toString() {
+
+			List<String> info = new ArrayList<>();
+			info.add(String.valueOf(params));
+			info.add(String.valueOf(expectedValue));
+
+			return String.join(", ", info);
+
+		}
+
 	}
 
 }
