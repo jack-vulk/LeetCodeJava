@@ -40,7 +40,7 @@ public abstract class Solution<I, O> {
 	public O run(String args[]) throws InvalidParameterException, ExecutionException {
 
 		ParsedInfo params = this.parse(args);
-		O result = this.proc(params);
+		O result = this.proc(params.params);
 		printResult(result);
 
 		if (isMatch(result, params.expectedValue)) {
