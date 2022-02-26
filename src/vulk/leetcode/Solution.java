@@ -116,20 +116,54 @@ public abstract class Solution<I, O> {
 		return (ComUtil.isEmpty(result) && ComUtil.isEmpty(expectedValue)) || expectedValue.equals(result);
 	}
 
+	/**
+	 * Implementation of the solution
+	 * 
+	 * @param param parameter
+	 * @return executation's output
+	 * @throws ExecutionException Thrown when there is something wrong during
+	 *                            runtime
+	 */
 	protected abstract O execute(I param) throws ExecutionException;
 
+	/**
+	 * Parse input's passed from main process to input and expected value
+	 * 
+	 * @param args parameter passed from main process
+	 * @return input and expected value
+	 * @throws InvalidParameterException Thrown when the parameters could not be
+	 *                                   parsed
+	 */
 	protected abstract ParsedInfo parseParam(String args[]) throws InvalidParameterException;
 
+	/**
+	 * Check whether the input passed from main process matches with the I/F
+	 * 
+	 * @param args parameter from main process
+	 * @return
+	 */
 	protected abstract boolean isValid(String args[]);
 
+	/**
+	 * Object used to store input and expected value
+	 * 
+	 * @author KJack
+	 *
+	 */
 	protected class ParsedInfo {
 		
 		public ParsedInfo() {
-			// TODO Auto-generated constructor stub
+			//
 		}
 
+		/**
+		 * Parameter
+		 */
 		public I params;
 		
+		/**
+		 * Expected output
+		 */
 		public O expectedValue;
 		
 	}
