@@ -134,10 +134,12 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 	}
 
 	@Override
-	protected Param parseParam(String[] args) {
+	protected ParsedInfo parseParam(String[] args) {
+
+		ParsedInfo info = new ParsedInfo();
+		info.params = new Param();
 
 		final String filePath = args[PARAM_FILE_PATH];
-		Param param = new Param();
 		
 		try {
 			CsvParser.parse(filePath, new ICsvParser() {
@@ -145,7 +147,7 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 				@Override
 				public void readLine(int lineNumber, List<String> data) {
 
-					if (lineNumber > 2 || ComUtil.isEmpty(data)) {
+					if (lineNumber > 3 || ComUtil.isEmpty(data)) {
 						return;
 					}
 
@@ -162,9 +164,11 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 					}
 
 					if (lineNumber == 1) {
-						param.firstList = resultNode;
+						info.params.firstList = resultNode;
+					} else if (lineNumber == 2) {
+						info.params.secondList = resultNode;
 					} else {
-						param.secondList = resultNode;
+						info.expectedValue = resultNode;
 					}
 
 				}
@@ -173,7 +177,7 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 			throw new InvalidParameterException();
 		}
 
-		return param;
+		return info;
 	}
 
 	@Override

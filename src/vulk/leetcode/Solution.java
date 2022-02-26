@@ -39,8 +39,16 @@ public abstract class Solution<I, O> {
 	 */
 	public O run(String args[]) throws InvalidParameterException, ExecutionException {
 
-		O result = this.proc(this.parse(args));
+		ParsedInfo params = this.parse(args);
+		O result = this.proc(params);
 		printResult(result);
+
+		if (isMatch(result, params.expectedValue)) {
+			LOGGER.info("OK!");
+		} else {
+			LOGGER.info("NG!");
+		}
+
 		return result;
 	}
 
@@ -52,7 +60,7 @@ public abstract class Solution<I, O> {
 	 * @throws InvalidParameterException Thrown when the parameters are not set
 	 *                                   correctly
 	 */
-	private I parse(String args[]) throws InvalidParameterException {
+	private ParsedInfo parse(String args[]) throws InvalidParameterException {
 
 		// If the params are not set correctly (mostly on run/debug configuration)
 		// throw exception
@@ -64,11 +72,11 @@ public abstract class Solution<I, O> {
 
 		LOGGER.info("InputFile: " + args[PARAM_FILE_PATH]);
 
-		I params = this.parseParam(args);
+		ParsedInfo parsedInfo = this.parseParam(args);
 
-		LOGGER.info("Input: " + params);
+		LOGGER.info("Input: " + parsedInfo);
 
-		return params;
+		return parsedInfo;
 	}
 
 	/**
@@ -94,13 +102,70 @@ public abstract class Solution<I, O> {
 	 * @param result
 	 */
 	protected void printResult(O result) {
-		LOGGER.info("Output: " + result.toString());
+		LOGGER.info("Output: " + result);
 	}
 
+	/**
+	 * Check whether the runtime's result matches with expected value
+	 * 
+	 * @param result        runtime's result
+	 * @param expectedValue
+	 * @return true(matched)
+	 */
+	protected boolean isMatch(O result, O expectedValue) {
+		return (ComUtil.isEmpty(result) && ComUtil.isEmpty(expectedValue)) || expectedValue.equals(result);
+	}
+
+	/**
+	 * Implementation of the solution
+	 * 
+	 * @param param parameter
+	 * @return executation's output
+	 * @throws ExecutionException Thrown when there is something wrong during
+	 *                            runtime
+	 */
 	protected abstract O proc(I param) throws ExecutionException;
 
-	protected abstract I parseParam(String args[]) throws InvalidParameterException;
+	/**
+	 * Parse input's passed from main process to input and expected value
+	 * 
+	 * @param args parameter passed from main process
+	 * @return input and expected value
+	 * @throws InvalidParameterException Thrown when the parameters could not be
+	 *                                   parsed
+	 */
+	protected abstract ParsedInfo parseParam(String args[]) throws InvalidParameterException;
 
+	/**
+	 * Check whether the input passed from main process matches with the I/F
+	 * 
+	 * @param args parameter from main process
+	 * @return
+	 */
 	protected abstract boolean isValid(String args[]);
+
+	/**
+	 * Object used to store input and expected value
+	 * 
+	 * @author KJack
+	 *
+	 */
+	protected class ParsedInfo {
+		
+		public ParsedInfo() {
+			//
+		}
+
+		/**
+		 * Parameter
+		 */
+		public I params;
+		
+		/**
+		 * Expected output
+		 */
+		public O expectedValue;
+		
+	}
 
 }
