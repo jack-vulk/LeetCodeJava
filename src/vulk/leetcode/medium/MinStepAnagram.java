@@ -30,10 +30,13 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 		char[] arrayT = t == null ? new char[] {} : t.toCharArray();
 		Arrays.sort(arrayS);
 		Arrays.sort(arrayT);
-		
-		return minStepsIter(String.valueOf(arrayS), String.valueOf(arrayT));
+
+		return minStepsRecursive(String.valueOf(arrayS), String.valueOf(arrayT));
 	}
 
+	// ===========================
+	// Solution using loop, right but not effective
+	// ===========================
 	private int minStepsIter(String s, String t) {
 
 		if (s == null || s.length() == 0) {
@@ -43,7 +46,6 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 		}
 
 		int countDiff = 0;
-		int secondDiff = 0;
 		String secondStr = String.valueOf(t.toCharArray());
 		String firstString;
 
@@ -59,15 +61,18 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 
 		}
 
-		if ((secondStr.length() - secondDiff) == 0 && t.length() == countDiff) {
+		if (secondStr.length() == 0 && t.length() == countDiff) {
 			countDiff = 0;
 		} else {
-			countDiff += (secondStr.length() - secondDiff);
+			countDiff += secondStr.length();
 		}
 
 		return countDiff;
 	}
 
+	// =================================
+	// May cause stackoverflow
+	// =================================
 	public int minStepsRecursive(String s, String t) {
 
 		if (s.length() == 0) {
@@ -76,10 +81,30 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 			return s.length();
 		}
 
-		String firstStr = String.valueOf(s.charAt(0));
-		String secondStr = t.replaceFirst(firstStr, "");
+		String remainingFirstString = "";
+		String remainingSecondString = "";
 
-		return 1 + minStepsRecursive(s.length() <= 1 ? "" : s.substring(1, s.length() - 1), secondStr);
+		int comparision = s.substring(0, 1).compareTo(t.substring(0, 1));
+
+		if (comparision == 0) {
+			remainingFirstString = s.substring(1);
+			remainingSecondString = t.substring(1);
+			try {
+				return minStepsRecursive(remainingFirstString, remainingSecondString);
+			} catch (Exception e) {
+				throw e;
+			}
+		} else {
+			if (comparision > 0) {
+				remainingFirstString = t.substring(1);
+				remainingSecondString = s;
+			} else {
+				remainingFirstString = s.substring(1);
+				remainingSecondString = t;
+			}
+			return 1 + minStepsRecursive(remainingFirstString, remainingSecondString);
+		}
+
 	}
 
 	// ===================================
