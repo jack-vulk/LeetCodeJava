@@ -31,7 +31,8 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 		Arrays.sort(arrayS);
 		Arrays.sort(arrayT);
 
-		return minStepsRecursive(String.valueOf(arrayS), String.valueOf(arrayT));
+		return minStepsIter(String.valueOf(arrayS), String.valueOf(arrayT));
+
 	}
 
 	// ===========================
@@ -45,27 +46,40 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 			return s.length();
 		}
 
+		int comparision;
 		int countDiff = 0;
-		String secondStr = String.valueOf(t.toCharArray());
-		String firstString;
+		String remainingFirst = s;
+		String remainingSecond = t;
 
-		for (int sIndex = 0; sIndex < s.length(); sIndex++) {
+		do {
 
-			firstString = String.valueOf(s.charAt(sIndex));
-
-			if (secondStr.contains(firstString)) {
-				secondStr = secondStr.replaceFirst(firstString, "");
-			} else {
-				countDiff++;
+			if (remainingFirst.length() == 0) {
+				countDiff += remainingSecond.length();
+				break;
+			} else if (remainingSecond.length() == 0) {
+				countDiff += remainingFirst.length();
+				break;
 			}
 
-		}
+			comparision = remainingFirst.substring(0, 1).compareTo(remainingSecond.substring(0, 1));
+			
+			if (comparision == 0) {
+				remainingFirst = remainingFirst.substring(1);
+				remainingSecond = remainingSecond.substring(1);
+			} else {
+				countDiff++;
+				if (comparision > 0) {
+					String temp = remainingFirst;
+					remainingFirst = remainingSecond.substring(1);
+					remainingSecond = temp;
+				} else {
+					String temp = remainingSecond;
+					remainingSecond = remainingFirst.substring(1);
+					remainingFirst = temp;
+				}
+			}
 
-		if (secondStr.length() == 0 && t.length() == countDiff) {
-			countDiff = 0;
-		} else {
-			countDiff += secondStr.length();
-		}
+		} while (true);
 
 		return countDiff;
 	}
