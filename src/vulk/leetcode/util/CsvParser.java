@@ -17,11 +17,24 @@ public class CsvParser {
 
 	public static void parse(String filePath, ICsvParser csvParser) throws IOException {
 
+		parse(filePath, csvParser, true);
+
+	}
+
+	public static void parse(String filePath, ICsvParser csvParser, boolean removeQuote) throws IOException {
+
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
 		String line;
 		int lineNumber = 1;
 		while ((line = br.readLine()) != null) {
 			String[] values = line.split(COMMA_DELIMITER);
+
+			if (removeQuote && ComUtil.isNotEmpty(values)) {
+				for (int index = 0; index < values.length; index++) {
+					values[index] = values[index].replace("\"", "");
+				}
+			}
+
 			csvParser.readLine(lineNumber, Arrays.asList(values));
 			lineNumber++;
 

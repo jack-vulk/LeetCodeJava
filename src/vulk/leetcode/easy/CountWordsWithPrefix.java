@@ -1,11 +1,15 @@
 package vulk.leetcode.easy;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import vulk.leetcode.Solution;
 import vulk.leetcode.easy.CountWordsWithPrefix.Param;
 import vulk.leetcode.util.ComUtil;
+import vulk.leetcode.util.CsvParser;
 import vulk.leetcode.util.FileUtil;
+import vulk.leetcode.util.ICsvParser;
 
 /**
  * Solution for merge-two-sorted-lists on LeetCode
@@ -14,6 +18,10 @@ import vulk.leetcode.util.FileUtil;
  *
  */
 public class CountWordsWithPrefix extends Solution<Param, Integer> {
+
+	private static final int PARAM_WORD = 1;
+	private static final int PARAM_PREFIX = 2;
+	private static final int PARAM_EXPECTED_OUTPUT = 3;
 
 	// ================
 	// Recursion FTW
@@ -54,14 +62,32 @@ public class CountWordsWithPrefix extends Solution<Param, Integer> {
 	protected ParsedInfo parseParam(String[] args) {
 		
 		ParsedInfo info = new ParsedInfo();
-		Param param = new Param();
+		info.params = new Param();
 
-		param.words = new String[] { "pay", "attention", "practice", "attend" };
+		try {
+			CsvParser.parse(args[PARAM_FILE_PATH], new ICsvParser() {
 
-		param.prefix = "at";
+				@Override
+				public void readLine(int line, List<String> data) {
 
-		info.params = param;
-		info.expectedValue = 2;
+					switch (line) {
+					case PARAM_WORD:
+						info.params.words = data.toArray(new String[] {});
+						break;
+					case PARAM_PREFIX:
+						info.params.prefix = data.get(0);
+						break;
+					case PARAM_EXPECTED_OUTPUT:
+						info.expectedValue = Integer.parseInt(data.get(0));
+						break;
+					}
+
+				}
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return info;
 	}
