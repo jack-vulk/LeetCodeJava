@@ -30,6 +30,53 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 
 	public int minSteps(String s, String t) {
 
+		return minStepsHash(s, t);
+	}
+
+	// ===========================
+	// Solution using hash
+	// ===========================
+	public int minStepsHash(String firstStr, String secondStr) {
+
+		int[] firstStrHash = getHash(firstStr);
+		int[] secondStrHash = getHash(secondStr);
+
+		int count = 0;
+		for (int cIndex = 0; cIndex < 26; cIndex++) {
+			count += Math.abs(firstStrHash[cIndex] - secondStrHash[cIndex]);
+		}
+
+		return count;
+	}
+
+	public int[] getHash(String text) {
+
+		int[] result = new int[26];
+
+		if (text == null) {
+			return result;
+		}
+
+		int cIndex = 0;
+		char[] cLst = text.toCharArray();
+
+		for (char cText : cLst) {
+
+			cIndex = cText - 'a';
+
+			result[cIndex] += 1;
+
+		}
+
+		return result;
+	}
+
+	// ===========================
+	// Solution using loop
+	// ===========================
+
+	public int minStepsIterStart(String s, String t) {
+
 		char[] arrayS = s == null ? new char[] {} : s.toCharArray();
 		char[] arrayT = t == null ? new char[] {} : t.toCharArray();
 		Arrays.sort(arrayS);
@@ -39,9 +86,6 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 
 	}
 
-	// ===========================
-	// Solution using loop
-	// ===========================
 	private int minStepsIter(String s, String t) {
 
 		if (s == null || s.length() == 0) {
