@@ -25,7 +25,8 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 	private static final int PARAM_EXPECTED_OUTPUT = 3;
 
 	private static final int PARAM_COMPARE_RESULT = 0;
-	private static final int PARAM_COMPARE_MATCH_COUNT = 1;
+	private static final int PARAM_COMPARE_MATCH_COUNT_FIRST = 1;
+	private static final int PARAM_COMPARE_MATCH_COUNT_SECOND = 2;
 
 	public int minSteps(String s, String t) {
 
@@ -51,7 +52,8 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 
 		int[] comparision;
 		int compareResult;
-		int matchedCount;
+		int matchedCountFirst;
+		int matchedCountSecond;
 		int countDiff = 0;
 		String remainingFirst = s;
 		String remainingSecond = t;
@@ -68,21 +70,26 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 
 			comparision = compare(remainingFirst, remainingSecond);
 			compareResult = comparision[PARAM_COMPARE_RESULT];
-			matchedCount = comparision[PARAM_COMPARE_MATCH_COUNT];
+			matchedCountFirst = comparision[PARAM_COMPARE_MATCH_COUNT_FIRST];
+			matchedCountSecond = comparision[PARAM_COMPARE_MATCH_COUNT_SECOND];
 
 			if (compareResult == 0) {
-				remainingFirst = remainingFirst.substring(matchedCount + 1);
-				remainingSecond = remainingSecond.substring(matchedCount + 1);
+				countDiff += Math.abs(matchedCountFirst - matchedCountSecond);
+				remainingFirst = remainingFirst.substring(matchedCountFirst);
+				remainingSecond = remainingSecond.substring(matchedCountSecond);
 			} else {
-				countDiff++;
 				if (compareResult > 0) {
+					// first > second
 					String temp = remainingFirst;
-					remainingFirst = remainingSecond.substring(1);
+					remainingFirst = remainingSecond.substring(matchedCountSecond);
 					remainingSecond = temp;
+					countDiff += matchedCountSecond;
 				} else {
+					// second > first
 					String temp = remainingSecond;
-					remainingSecond = remainingFirst.substring(1);
+					remainingSecond = remainingFirst.substring(matchedCountFirst);
 					remainingFirst = temp;
+					countDiff += matchedCountFirst;
 				}
 			}
 
@@ -92,27 +99,14 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 	}
 
 	private int[] compare(String first, String second) {
-		int[] result = new int[2];
+		int[] result = new int[3];
 
-		int matchedCount = 0;
-		int compareResult = 0;
 		String remainingFirstChar = first.substring(0, 1);
 		String remainingSecondChar = second.substring(0, 1);
 
-		int firstCharCompare = remainingFirstChar.compareTo(remainingSecondChar);
-
-		if (firstCharCompare == 0) {
-			int countOfFirstChar = first.lastIndexOf(remainingFirstChar);
-			int countOfSecondChar = second.lastIndexOf(remainingSecondChar);
-
-			matchedCount = countOfFirstChar < countOfSecondChar ? countOfFirstChar
-					: countOfSecondChar;
-		} else {
-			compareResult = firstCharCompare;
-		}
-
-		result[PARAM_COMPARE_RESULT] = compareResult;
-		result[PARAM_COMPARE_MATCH_COUNT] = matchedCount;
+		result[PARAM_COMPARE_RESULT] = remainingFirstChar.compareTo(remainingSecondChar);
+		result[PARAM_COMPARE_MATCH_COUNT_FIRST] = first.lastIndexOf(remainingFirstChar) + 1;
+		result[PARAM_COMPARE_MATCH_COUNT_SECOND] = second.lastIndexOf(remainingSecondChar) + 1;
 
 		return result;
 	}
