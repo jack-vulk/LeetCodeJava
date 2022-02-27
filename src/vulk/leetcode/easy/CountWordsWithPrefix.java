@@ -1,6 +1,7 @@
 package vulk.leetcode.easy;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -116,5 +117,17 @@ public class CountWordsWithPrefix extends Solution<Param, Integer> {
 		 */
 		private String prefix;
 
+		@Override
+		public String toString() {
+
+			StringBuffer sb = new StringBuffer();
+
+			sb.append(Arrays.asList(words));
+			sb.append(", ");
+			sb.append(prefix);
+
+			return sb.toString();
+
+		}
 	}
 }
