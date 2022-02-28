@@ -1,13 +1,12 @@
 package vulk.leetcode;
 
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import vulk.leetcode.easy.MergeTwoSortedLst;
+import vulk.leetcode.easy.SummaryRanges;
 import vulk.leetcode.util.ComUtil;
 import vulk.leetcode.util.FileUtil;
 
@@ -38,7 +37,11 @@ public class Main {
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
 		// Init the solution with the specific class
-		Solution solution = new MergeTwoSortedLst();
+		// Solution solution = new MergeTwoSortedLst();
+		// Solution solution = new AddTwoNumber();
+		// Solution solution = new CountWordsWithPrefix();
+		// Solution solution = new MinStepAnagram();
+		Solution solution = new SummaryRanges();
 
 		try {
 			execute(solution, args);
@@ -71,15 +74,13 @@ public class Main {
 		if (FileUtil.isValidPath(filePath)) {
 
 			List<String> files = FileUtil.getFiles(filePath);
-			String[] copiedArgs = Arrays.copyOf(args, args.length);
 
 			for (String inputFile : files) {
-				copiedArgs[PARAM_FILE_PATH] = inputFile;
-				solution.run(copiedArgs);
+				solution.run(inputFile);
 			}
 
 		} else if (FileUtil.isValidFile(filePath)) {
-			solution.run(args);
+			solution.run(filePath);
 		} else {
 			throw new InvalidParameterException();
 		}

@@ -7,9 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import vulk.leetcode.Solution;
 import vulk.leetcode.medium.MinStepAnagram.Param;
-import vulk.leetcode.util.ComUtil;
 import vulk.leetcode.util.FileParser;
-import vulk.leetcode.util.FileUtil;
 import vulk.leetcode.util.IFileParser;
 
 /**
@@ -205,13 +203,13 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 	}
 
 	@Override
-	protected ParsedInfo parseParam(String[] args) {
+	protected ParsedInfo parseParam(String filePath) {
 
 		ParsedInfo info = new ParsedInfo();
 		info.params = new Param();
 
 		try {
-			FileParser.parse(args[PARAM_FILE_PATH], new IFileParser() {
+			FileParser.parse(filePath, new IFileParser() {
 
 				@Override
 				public void readLine(int line, String data) {
@@ -236,12 +234,6 @@ public class MinStepAnagram extends Solution<Param, Integer> {
 		}
 
 		return info;
-	}
-
-	@Override
-	protected boolean isValid(final String[] args) {
-
-		return ComUtil.isNotEmpty(args) && FileUtil.isValidFile(args[PARAM_FILE_PATH]);
 	}
 
 	/**

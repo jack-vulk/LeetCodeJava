@@ -9,9 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 import vulk.leetcode.Solution;
 import vulk.leetcode.easy.SummaryRanges.Param;
-import vulk.leetcode.util.ComUtil;
 import vulk.leetcode.util.CsvParser;
-import vulk.leetcode.util.FileUtil;
 import vulk.leetcode.util.ICsvParser;
 
 /**
@@ -73,13 +71,11 @@ public class SummaryRanges extends Solution<Param, List<String>> {
 	}
 
 	@Override
-	protected ParsedInfo parseParam(String[] args) {
+	protected ParsedInfo parseParam(String filePath) {
 
 		ParsedInfo info = new ParsedInfo();
 		info.params = new Param();
 
-		final String filePath = args[PARAM_FILE_PATH];
-		
 		try {
 			CsvParser.parse(filePath, new ICsvParser() {
 
@@ -105,12 +101,6 @@ public class SummaryRanges extends Solution<Param, List<String>> {
 		}
 
 		return info;
-	}
-
-	@Override
-	protected boolean isValid(final String[] args) {
-
-		return ComUtil.isNotEmpty(args) && FileUtil.isValidFile(args[PARAM_FILE_PATH]);
 	}
 
 	/**
