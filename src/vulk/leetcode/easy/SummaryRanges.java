@@ -42,7 +42,7 @@ public class SummaryRanges extends Solution<Param, List<String>> {
 
 			for (nextIndex = index + 1; nextIndex < numsSize; nextIndex++) {
 
-				if (Math.abs(nums[nextIndex] - nums[nextIndex - 1]) > 1) {
+				if (nums[nextIndex] - nums[nextIndex - 1] != 1) {
 					break;
 				}
 				endNum = nums[nextIndex];
