@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import vulk.leetcode.util.ComUtil;
+import vulk.leetcode.util.FileUtil;
 
 /**
  * 
@@ -20,11 +21,6 @@ import vulk.leetcode.util.ComUtil;
 public abstract class Solution<I, O> {
 
 	/**
-	 * Index to retrieve the input file's path
-	 */
-	protected static final int PARAM_FILE_PATH = 0;
-
-	/**
 	 * LOG
 	 */
 	private static final Logger LOGGER = Logger.getLogger(Solution.class.getName());
@@ -32,16 +28,16 @@ public abstract class Solution<I, O> {
 	/**
 	 * Entry point for the solution
 	 * 
-	 * @param args Params
+	 * @param inputFile inputFile
 	 * @return Output
 	 * @throws InvalidParameterException Thrown when the parameters are not set
 	 *                                   correctly
 	 * @throws ExecutionException        Thrown when there is something wrong during
 	 *                                   runtime
 	 */
-	public O run(String args[]) throws InvalidParameterException, ExecutionException {
+	public O run(String inputFile) throws InvalidParameterException, ExecutionException {
 
-		ParsedInfo params = this.parse(args);
+		ParsedInfo params = this.parse(inputFile);
 		O result = this.proc(params.params);
 		printResult(result);
 
@@ -57,45 +53,27 @@ public abstract class Solution<I, O> {
 	/**
 	 * Parse the args to parameter object
 	 * 
-	 * @param args params
+	 * @param inputFile inputFile
 	 * @return parameter Object
 	 * @throws InvalidParameterException Thrown when the parameters are not set
 	 *                                   correctly
 	 */
-	private ParsedInfo parse(String args[]) throws InvalidParameterException {
+	private ParsedInfo parse(String inputFile) throws InvalidParameterException {
 
 		// If the params are not set correctly (mostly on run/debug configuration)
 		// throw exception
-		if (!isValid(args)) {
-			LOGGER.log(Level.SEVERE, "Invalid Parameter ");
-			print(args);
+		if (!FileUtil.isValidFile(inputFile)) {
+			LOGGER.log(Level.SEVERE, "Invalid Parameter " + inputFile);
 			throw new InvalidParameterException();
 		}
 
-		LOGGER.info("InputFile: " + args[PARAM_FILE_PATH]);
+		LOGGER.info("InputFile: " + inputFile);
 
-		ParsedInfo parsedInfo = this.parseParam(args);
+		ParsedInfo parsedInfo = this.parseParam(inputFile);
 
 		LOGGER.info("Input: " + parsedInfo);
 
 		return parsedInfo;
-	}
-
-	/**
-	 * 
-	 * Print the array of object
-	 * 
-	 * @param args
-	 */
-	private static void print(Object[] args) {
-
-		if (ComUtil.isEmpty(args)) {
-			LOGGER.info("empty");
-		} else {
-			for (Object arg : args) {
-				LOGGER.info(String.valueOf(arg));
-			}
-		}
 	}
 
 	/**
@@ -131,20 +109,12 @@ public abstract class Solution<I, O> {
 	/**
 	 * Parse input's passed from main process to input and expected value
 	 * 
-	 * @param args parameter passed from main process
+	 * @param filePath filePath to inputFile
 	 * @return input and expected value
 	 * @throws InvalidParameterException Thrown when the parameters could not be
 	 *                                   parsed
 	 */
-	protected abstract ParsedInfo parseParam(String args[]) throws InvalidParameterException;
-
-	/**
-	 * Check whether the input passed from main process matches with the I/F
-	 * 
-	 * @param args parameter from main process
-	 * @return
-	 */
-	protected abstract boolean isValid(String args[]);
+	protected abstract ParsedInfo parseParam(String filePath) throws InvalidParameterException;
 
 	/**
 	 * Object used to store input and expected value

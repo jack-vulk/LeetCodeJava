@@ -1,14 +1,15 @@
 package vulk.leetcode;
 
+import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import vulk.leetcode.easy.MergeTwoSortedLst;
+import vulk.leetcode.easy.CountWordsWithPrefix;
 import vulk.leetcode.util.ComUtil;
+import vulk.leetcode.util.ConfigLoader;
 import vulk.leetcode.util.FileUtil;
 
 /**
@@ -23,7 +24,7 @@ public class Main {
 	/**
 	 * Index to retrieve the input file's path
 	 */
-	protected static final int PARAM_FILE_PATH = 0;
+	protected static final int PARAM_FILE_PATH = 1;
 
 	/**
 	 * LOG
@@ -37,8 +38,15 @@ public class Main {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
+
+		ConfigLoader.initResourcePath(args[0]);
+
 		// Init the solution with the specific class
-		Solution solution = new MergeTwoSortedLst();
+		// Solution solution = new MergeTwoSortedLst();
+		// Solution solution = new AddTwoNumber();
+		Solution solution = new CountWordsWithPrefix();
+		// Solution solution = new MinStepAnagram();
+		// Solution solution = new SummaryRanges();
 
 		try {
 			execute(solution, args);
@@ -66,20 +74,30 @@ public class Main {
 			throw new InvalidParameterException();
 		}
 
-		final String filePath = args[PARAM_FILE_PATH];
+		String inputConfig = null;
+		try {
+			inputConfig = ConfigLoader.getInputConfig(solution.getClass().getName());
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new InvalidParameterException();
+		}
+
+		if (ComUtil.isEmpty(inputConfig)) {
+			throw new InvalidParameterException();
+		}
+
+		final String filePath = args[PARAM_FILE_PATH] + inputConfig;
 
 		if (FileUtil.isValidPath(filePath)) {
 
 			List<String> files = FileUtil.getFiles(filePath);
-			String[] copiedArgs = Arrays.copyOf(args, args.length);
 
 			for (String inputFile : files) {
-				copiedArgs[PARAM_FILE_PATH] = inputFile;
-				solution.run(copiedArgs);
+				solution.run(inputFile);
 			}
 
 		} else if (FileUtil.isValidFile(filePath)) {
-			solution.run(args);
+			solution.run(filePath);
 		} else {
 			throw new InvalidParameterException();
 		}
