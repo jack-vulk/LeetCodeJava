@@ -1,5 +1,6 @@
 package vulk.leetcode.util;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -25,7 +26,7 @@ public class ComUtil {
 		}
 
 		if (data.getClass().isArray()) {
-			return ((Object[]) data).length == 0;
+			return Arrays.asList(data).size() == 0;
 		} else if (data instanceof Collection) {
 			return ((Collection) data).isEmpty();
 		} else if (data instanceof CharSequence) {
