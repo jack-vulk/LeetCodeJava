@@ -1,13 +1,13 @@
 package vulk.leetcode;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import vulk.leetcode.easy.CountWordsWithPrefix;
 import vulk.leetcode.util.ComUtil;
 import vulk.leetcode.util.ConfigLoader;
 import vulk.leetcode.util.FileUtil;
@@ -41,19 +41,15 @@ public class Main {
 
 		ConfigLoader.initResourcePath(args[0]);
 
-		// Init the solution with the specific class
-		// Solution solution = new MergeTwoSortedLst();
-		// Solution solution = new AddTwoNumber();
-		Solution solution = new CountWordsWithPrefix();
-		// Solution solution = new MinStepAnagram();
-		// Solution solution = new SummaryRanges();
-
 		try {
+			Solution solution = getSolution();
 			execute(solution, args);
 		} catch (InvalidParameterException e) {
 			LOGGER.log(Level.SEVERE, "Invalid parameter", e);
 		} catch (ExecutionException e) {
 			LOGGER.log(Level.SEVERE, "Execution failed", e);
+		} catch (IOException | ClassNotFoundException e) {
+			LOGGER.log(Level.SEVERE, "Invalid configuration", e);
 		}
 	}
 
@@ -102,6 +98,34 @@ public class Main {
 			throw new InvalidParameterException();
 		}
 		
+	}
+
+	/**
+	 * Init solution based on configuration
+	 * 
+	 * @return solution based instance
+	 * @throws IOException               no input.configures file
+	 * @throws ClassNotFoundException
+	 * @throws InvalidParameterException
+	 */
+	@SuppressWarnings("rawtypes")
+	public static Solution getSolution() throws ClassNotFoundException, IOException, InvalidParameterException {
+
+		Class<?> targetClass = Class.forName(ConfigLoader.getInputConfig("target").trim());
+		Object solutionObj = null;
+		try {
+			solutionObj = targetClass.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (!(solutionObj instanceof Solution)) {
+			throw new InvalidParameterException();
+		}
+
+		return (Solution) solutionObj;
 	}
 
 }
