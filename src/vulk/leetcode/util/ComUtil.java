@@ -1,5 +1,6 @@
 package vulk.leetcode.util;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -19,14 +20,14 @@ public class ComUtil {
 	 * @return true(empty), false(not empty)
 	 */
 	@SuppressWarnings("rawtypes")
-	public static <T> boolean isEmpty(T data) {
+	public static boolean isEmpty(Object data) {
 
 		if (data == null) {
 			return true;
 		}
 
 		if (data.getClass().isArray()) {
-			return Arrays.asList(data).size() == 0;
+			return Array.getLength(data) == 0;
 		} else if (data instanceof Collection) {
 			return ((Collection) data).isEmpty();
 		} else if (data instanceof CharSequence) {
@@ -44,7 +45,7 @@ public class ComUtil {
 	 * @param data data to be checked
 	 * @return true(not empty), false(empty)
 	 */
-	public static <T> boolean isNotEmpty(T data) {
+	public static boolean isNotEmpty(Object data) {
 		return !isEmpty(data);
 	}
 
@@ -55,7 +56,7 @@ public class ComUtil {
 	 * @return string present of data
 	 */
 	@SuppressWarnings("rawtypes")
-	public static <T> String toString(T data) {
+	public static String toString(Object data) {
 
 		if (data == null) {
 			return String.valueOf(null);
@@ -64,19 +65,14 @@ public class ComUtil {
 		StringBuffer sb = new StringBuffer();
 
 		if (data.getClass().isArray()) {
-			Object[] aData = ((Object[]) data);
+			Object[] aData = castToObjectArray(data);
 
-			sb.append(toString(aData));
+			sb.append(Arrays.toString(aData));
 		} else if (data instanceof Collection) {
 
 			Collection cData = ((Collection) data);
 
-			sb.append(toString(cData.toArray()));
-		} else if (data instanceof CharSequence) {
-
-			CharSequence csData = ((CharSequence) data);
-			sb.append(csData.toString());
-
+			sb.append(Arrays.toString(cData.toArray()));
 		} else {
 			sb.append(data.toString());
 		}
@@ -86,34 +82,28 @@ public class ComUtil {
 	}
 
 	/**
-	 * Print string present of array
 	 * 
-	 * @param arrayObject array to be printed
-	 * @return string present of array
+	 * Safely cast an array object to Object[]
+	 * 
+	 * @param obj object to be cast
+	 * @return array that present obj
 	 */
-	private static String toString(Object[] arrayObject) {
+	@SuppressWarnings("rawtypes")
+	public static Object[] castToObjectArray(Object obj) {
 
-		if (arrayObject == null) {
-			return String.valueOf(null);
-		}
+		Class dataType = obj.getClass().getComponentType();
+		if (dataType.isPrimitive()) {
+			final int aLength = Array.getLength(obj);
+			Object[] aData = new Object[aLength];
 
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("[");
-
-		for (int i = 0; i < arrayObject.length; i++) {
-
-			Object object = arrayObject[i];
-
-			sb.append(String.valueOf(object));
-			if (i + 1 < arrayObject.length) {
-				sb.append(",");
+			for (int i = 0; i < aLength; i++) {
+				aData[i] = Array.get(obj, i);
 			}
+
+			return aData;
+		} else {
+			return (Object[]) obj;
 		}
-
-		sb.append("]");
-
-		return sb.toString();
 	}
 
 }

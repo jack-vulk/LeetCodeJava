@@ -82,7 +82,7 @@ public abstract class Solution<I, O> {
 	 * @param result
 	 */
 	protected void printResult(O result) {
-		LOGGER.info("Output: " + result);
+		LOGGER.info("Output: " + ComUtil.toString(result));
 	}
 
 	/**
@@ -142,8 +142,8 @@ public abstract class Solution<I, O> {
 		public String toString() {
 
 			List<String> info = new ArrayList<>();
-			info.add(String.valueOf(params));
-			info.add(String.valueOf(expectedValue));
+			info.add(ComUtil.toString(params));
+			info.add(ComUtil.toString(expectedValue));
 
 			return String.join(", ", info);
 
