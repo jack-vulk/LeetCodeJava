@@ -101,18 +101,7 @@ public class L82RemoveDuplicationFromSortList extends Solution<Param, ListNode> 
 						return;
 					}
 
-					ListNode dataNode = new ListNode();
-					ListNode resultNode = dataNode;
-
-					for (int index = 0; index < data.size(); index++) {
-						dataNode.val = Integer.parseInt(data.get(index));
-						if (index + 1 < data.size()) {
-							ListNode nextNode = new ListNode();
-							dataNode.next = nextNode;
-							dataNode = nextNode;
-						}
-					}
-
+					ListNode resultNode = ListNode.parse(data);
 					switch (lineNumber) {
 					case PARAM_INPUT: {
 						info.params.inputList = resultNode;

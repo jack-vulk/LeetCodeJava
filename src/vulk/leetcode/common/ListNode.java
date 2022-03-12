@@ -1,5 +1,7 @@
 package vulk.leetcode.common;
 
+import java.util.List;
+
 import vulk.leetcode.util.ComUtil;
 
 public class ListNode {
@@ -70,5 +72,28 @@ public class ListNode {
 
 		return ComUtil.isEmpty(castNode);
 				
+	}
+
+	/**
+	 * Parse list of numeric data to ListNode
+	 * 
+	 * @param data list of numeric data
+	 * @return head of the list
+	 */
+	public static ListNode parse(List<String> data) {
+
+		ListNode dataNode = new ListNode();
+		ListNode resultNode = dataNode;
+
+		for (int index = 0; index < data.size(); index++) {
+			dataNode.val = Integer.parseInt(data.get(index));
+			if (index + 1 < data.size()) {
+				ListNode nextNode = new ListNode();
+				dataNode.next = nextNode;
+				dataNode = nextNode;
+			}
+		}
+
+		return resultNode;
 	}
 }
