@@ -154,17 +154,7 @@ public class MergeTwoSortedLst extends Solution<Param, ListNode> {
 						return;
 					}
 
-					ListNode dataNode = new ListNode();
-					ListNode resultNode = dataNode;
-
-					for (int index = 0; index < data.size(); index++) {
-						dataNode.val = Integer.parseInt(data.get(index));
-						if (index + 1 < data.size()) {
-							ListNode nextNode = new ListNode();
-							dataNode.next = nextNode;
-							dataNode = nextNode;
-						}
-					}
+					ListNode resultNode = ListNode.parse(data);
 
 					if (lineNumber == 1) {
 						info.params.firstList = resultNode;
